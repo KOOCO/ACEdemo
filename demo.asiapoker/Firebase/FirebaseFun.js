@@ -71,7 +71,7 @@ function verifyCode(code, type) {
 
             //手機註冊
             case "Register":
-                window.unityInstance.SendMessage("LoginView", "OnRegisterOTPSuccess");
+                window.unityInstance.SendMessage("LoginView", "RegisterOTPVerifyCallback");
                 break;
             
             //忘記密碼
