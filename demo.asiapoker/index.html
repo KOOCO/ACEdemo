@@ -55,13 +55,18 @@
         let unityInstance;
         let IsMobilePlatform;
 
+        //禁用Log
+        /*console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};*/
+
         window.onload = () => {
             const buildUrl = "Build";
-            const loaderUrl = buildUrl + "/Acetest.loader.js";
+            const loaderUrl = buildUrl + "/demo.asiapoker.loader.js";
             const config = {
-                dataUrl: buildUrl + "/Acetest.data.unityweb",
-                frameworkUrl: buildUrl + "/Acetest.framework.js.unityweb",
-                codeUrl: buildUrl + "/Acetest.wasm.unityweb",
+                dataUrl: buildUrl + "/demo.asiapoker.data.unityweb",
+                frameworkUrl: buildUrl + "/demo.asiapoker.framework.js.unityweb",
+                codeUrl: buildUrl + "/demo.asiapoker.wasm.unityweb",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "Kooco",
                 productName: "Asia Poker",
