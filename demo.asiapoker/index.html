@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,21 +19,143 @@
 
     <script src="Firebase/FirebaseFun.js"></script>
 
+    <script>
+        let isBackWarningDisplayed = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let threshold = 100;
+
+        // Detect swipe gesture on mobile
+        window.addEventListener('touchstart', function (event) {
+            console.log('touchstart')
+            touchStartX = event.changedTouches[0].screenX;  // Record where the touch started
+        }, false);
+
+        window.addEventListener('touchmove', function (event) {
+            console.log('touchmove')
+            touchEndX = event.changedTouches[0].screenX;    // Record where the touch moved to
+        }, false);
+
+        window.addEventListener('touchend', function (event) {
+            console.log('touchend')
+            handleSwipeGesture();
+        }, false);
+
+        // Function to handle the swipe gesture
+        function handleSwipeGesture() {
+            console.log('handleSwipeGesture')
+            const swipeDistance = touchEndX - touchStartX;
+
+            // Check if the swipe is long enough
+            if (Math.abs(swipeDistance) > threshold) {
+                // Swipe from the left side (right swipe)
+                if (swipeDistance > 0 && touchStartX < 50) {
+                    // Swipe started near the left edge (swipe from left to right)
+                    handleBackSwipe();
+                }
+                // Swipe from the right side (left swipe)
+                else if (swipeDistance < 0 && window.innerWidth - touchStartX < 50) {
+                    // Swipe started near the right edge (swipe from right to left)
+                    handleBackSwipe();
+                }
+            }
+        }
+
+        // Handle back swipe action with warning
+        function handleBackSwipe() {
+            console.log('handleBackSwipe')
+            if (!isBackWarningDisplayed) {
+                // Prevent the back action, show a warning
+                showWarningNotification();
+
+                // Set the flag to allow exit on the next swipe
+                isBackWarningDisplayed = true;
+
+                // Reset the flag after a few seconds to prevent accidental exit
+                setTimeout(() => {
+                    isBackWarningDisplayed = false;
+                }, 3000);  // Adjust the duration as needed
+            } else {
+                // Allow the swipe back action (or trigger the browser's back behavior)
+                window.history.back();
+            }
+        }
+
+        // Detect when user presses back/swipes back
+        window.onpopstate = function (event) {
+            console.log('onpopstate')
+            if (!isBackWarningDisplayed) {
+                // Prevent the default back action by pushing state again
+                history.pushState(null, null, window.location.href);
+
+                // Show the warning (can be a custom modal or in-app notification)
+                showWarningNotification();
+
+                // Set the flag to allow exit on the next back swipe
+                isBackWarningDisplayed = true;
+
+                // Optionally, reset the flag after a few seconds to prevent accidental exit
+                setTimeout(() => {
+                    isBackWarningDisplayed = false;
+                }, 3000); // Customize the time as needed
+            } else {
+                // Allow the back action on the second swipe
+                window.history.back();
+            }
+        };
+
+        // Push a dummy state into history on page load to prevent immediate exit
+        window.history.pushState(null, null, window.location.href);
+
+        // Function to show notification
+        function showWarningNotification() {
+            // Use any UI component or alert to show the message
+            alert("Swipe again to exit the game.");
+            // You can replace the alert with a more user-friendly modal or in-game UI
+        }
+    </script>
+
     <style>
         /*recaptcha小工具隱藏*/
         #recaptcha-container {
             display: none;
         }
+
         /*recaptcha驗證按鈕*/
-        #recaptcha-button {            
+        #recaptcha-button {
             position: absolute;
-            opacity: 0; /* 设置透明度为0 */
-            pointer-events: none; /* 禁用指针事件 */
-            display: none; /* 隐藏按钮 */
+            opacity: 0;
+            /* 设置透明度为0 */
+            pointer-events: none;
+            /* 禁用指针事件 */
+            display: none;
+            /* 隐藏按钮 */
+        }
+
+        #exit-warning {
+            display: none;
+            position: fixed;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #exit-warning-text {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
         }
     </style>
 </head>
+
 <body class="dark">
+    <div id="exit-warning">
+        <div id="exit-warning-text">
+            Swipe again to exit the game.
+        </div>
+    </div>
     <div id="unity-container" class="unity-desktop">
         <div id="recaptcha-container"></div><!--recaptcha小工具隱藏-->
         <button id="recaptcha-button"></button><!--recaptcha驗證按鈕-->
@@ -80,7 +203,7 @@
             const progressBarFull = document.querySelector("#unity-progress-bar-full");
             const fullscreenButton = document.querySelector("#unity-fullscreen-button");
 
-            const canFullscreen = (function() {
+            const canFullscreen = (function () {
                 return false;
             }());
 
@@ -115,13 +238,13 @@
 
                         //是否在預設瀏覽器內
                         const isDefaultBrowser = (navigator.userAgent.includes("Samsung Browser") || navigator.userAgent.includes("SamsungBrowser")) ||
-                                                 (navigator.userAgent.includes("EMUI Browser") || navigator.userAgent.includes("EMUIBrowser")) ||
-                                                 (navigator.userAgent.includes("MIUI Browser") || navigator.userAgent.includes("MIUIBrowser")) ||
-                                                 (navigator.userAgent.includes("OPPO Browser") || navigator.userAgent.includes("OPPOBrowser")) ||
-                                                 (navigator.userAgent.includes("vivo Browser") || navigator.userAgent.includes("vivoBrowser")) ||
-                                                 (navigator.userAgent.includes("OnePlus Browser") || navigator.userAgent.includes("OnePlusBrowser")) ||
-                                                 (navigator.userAgent.includes("Sony Browser") || navigator.userAgent.includes("SonyBrowser")) ||
-                                                 (navigator.userAgent.includes("LG Browser") || navigator.userAgent.includes("LGBrowser"));
+                            (navigator.userAgent.includes("EMUI Browser") || navigator.userAgent.includes("EMUIBrowser")) ||
+                            (navigator.userAgent.includes("MIUI Browser") || navigator.userAgent.includes("MIUIBrowser")) ||
+                            (navigator.userAgent.includes("OPPO Browser") || navigator.userAgent.includes("OPPOBrowser")) ||
+                            (navigator.userAgent.includes("vivo Browser") || navigator.userAgent.includes("vivoBrowser")) ||
+                            (navigator.userAgent.includes("OnePlus Browser") || navigator.userAgent.includes("OnePlusBrowser")) ||
+                            (navigator.userAgent.includes("Sony Browser") || navigator.userAgent.includes("SonyBrowser")) ||
+                            (navigator.userAgent.includes("LG Browser") || navigator.userAgent.includes("LGBrowser"));
                         instance.SendMessage('Entry', 'IsDefaultBrowser', isDefaultBrowser.toString());
 
                         //檢測Coinbase App是否開啟
@@ -140,19 +263,19 @@
                             document.body.appendChild(iframe);
 
                             // 定时器用于检测iframe是否加载成功
-                            var timer = setTimeout(function() {
+                            var timer = setTimeout(function () {
                                 // 当iframe加载超时时，认为Coinbase应用未打开
                                 isAppOpen(false);
                             }, 2000); // 2秒钟作为超时时间，您可以根据需要调整
 
                             // iframe加载完成后的处理函数
-                            iframe.onload = function() {
+                            iframe.onload = function () {
                                 clearTimeout(timer); // 清除超时定时器
                                 isAppOpen(true); // 说明Coinbase应用已经打开
                             };
 
                             // 检查是否有异常发生
-                            iframe.onerror = function() {
+                            iframe.onerror = function () {
                                 clearTimeout(timer); // 清除超时定时器
                                 isAppOpen(false); // 说明Coinbase应用未打开或者不存在
                             };
@@ -169,12 +292,12 @@
                         isCoinbaseAppOpen();
 
                         // 網頁視窗焦點
-                        window.addEventListener("blur", function() {
+                        window.addEventListener("blur", function () {
                             instance.SendMessage('Entry', 'OnWindowBlur');
                         });
 
                         // 頁面窗口獲得焦點
-                        window.addEventListener("focus", function() {
+                        window.addEventListener("focus", function () {
                             instance.SendMessage('Entry', 'OnWindowFocus');
                         });
 
@@ -186,10 +309,10 @@
                             //Line登入回傳
                             window.unityInstance.SendMessage('ThirdLoginManager', 'OnLineLoginCallback', code);
                         }
-                        if(code && state == null) {
+                        if (code && state == null) {
                             //IG登入回傳
                             window.unityInstance.SendMessage('Entry', 'OnIGLoginCallback', code);
-                        }                        
+                        }
 
                         // 放置接收代碼的 JavaScript
                         function getQueryParams() {
@@ -212,18 +335,18 @@
                         const invitationCode = queryParams['invitationCode'];
                         //邀請者ID
                         const inviterId = queryParams['inviterId'];
-                        instance.SendMessage('Entry', 'HtmlDebug', 'lineMail:'+lineMail);
-                        instance.SendMessage('Entry', 'HtmlDebug', 'igIdAndName:'+igIdAndName);
-                        instance.SendMessage('Entry', 'HtmlDebug', 'invitationCode:'+invitationCode);
-                        if(lineMail) {
+                        instance.SendMessage('Entry', 'HtmlDebug', 'lineMail:' + lineMail);
+                        instance.SendMessage('Entry', 'HtmlDebug', 'igIdAndName:' + igIdAndName);
+                        instance.SendMessage('Entry', 'HtmlDebug', 'invitationCode:' + invitationCode);
+                        if (lineMail) {
                             //Line
                             instance.SendMessage('Entry', 'ReceiveLineMail', lineMail);
                         }
-                        if(igIdAndName) {
+                        if (igIdAndName) {
                             //IG
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
                         }
-                        if(invitationCode && inviterId) {
+                        if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者
                             window.unityInstance.SendMessage('Entry', 'ReceiveInvitationCode', JSON.stringify({ invitationCode: invitationCode, inviterId: inviterId }));
                         }
@@ -238,4 +361,5 @@
 
     </script>
 </body>
+
 </html>
