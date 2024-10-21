@@ -329,6 +329,8 @@
                         const queryParams = getQueryParams();
                         //Line郵箱
                         const lineMail = queryParams['linemail'];
+
+                        const session = queryParams['session'];
                         //IG Id與名子
                         const igIdAndName = queryParams['igIdAndName'];
                         //邀請碼
@@ -345,6 +347,9 @@
                         if (igIdAndName) {
                             //IG
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
+                        }
+                        if (session) {
+                            instance.SendMessage('LoginView', 'NoodleLogin', session);
                         }
                         if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者
