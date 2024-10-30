@@ -331,6 +331,7 @@
                         const lineMail = queryParams['linemail'];
 
                         const session = queryParams['session'];
+                        
                         const login = queryParams['login'];
                         //IG Id與名子
                         const igIdAndName = queryParams['igIdAndName'];
@@ -354,7 +355,7 @@
                             instance.SendMessage('LoadSceneManager', 'NoodleSession', session);
                         }
                         if (login) {
-                            //Session id
+                            //Login id
                             instance.SendMessage('LoadSceneManager', 'NoodleLogin', login);
                         }
                         if (invitationCode && inviterId) {
