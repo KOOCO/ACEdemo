@@ -147,6 +147,10 @@
             border-radius: 5px;
             display: inline-block;
         }
+        #unity-logo {
+            width: 390px;
+            height: 203px;
+        }
     </style>
 </head>
 
@@ -185,11 +189,11 @@
 
         window.onload = () => {
             const buildUrl = "Build";
-            const loaderUrl = buildUrl + "/asiapoker.loader.js";
+            const loaderUrl = buildUrl + "/publish.loader.js";
             const config = {
-                dataUrl: buildUrl + "/asiapoker.data.unityweb",
-                frameworkUrl: buildUrl + "/asiapoker.framework.js.unityweb",
-                codeUrl: buildUrl + "/asiapoker.wasm.unityweb",
+                dataUrl: buildUrl + "/publish.data.unityweb",
+                frameworkUrl: buildUrl + "/publish.framework.js.unityweb",
+                codeUrl: buildUrl + "/publish.wasm.unityweb",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "Kooco",
                 productName: "Asia Poker",
@@ -324,6 +328,9 @@
                                 params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
                             }
                             return params;
+                        }
+                        function CloseTab() {
+                            window.top.close();
                         }
                         //新開頁面解析URL
                         const queryParams = getQueryParams();
