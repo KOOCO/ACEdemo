@@ -38,6 +38,7 @@
 
         window.addEventListener('touchend', function (event) {
             console.log('touchend')
+            touchEndX = event.changedTouches[0].screenX;
             handleSwipeGesture();
         }, false);
 
@@ -45,7 +46,7 @@
         function handleSwipeGesture() {
             console.log('handleSwipeGesture')
             const swipeDistance = touchEndX - touchStartX;
-
+            console.log("touchEndX:" + touchEndX + ",touchStartX:" + touchStartX);
             // Check if the swipe is long enough
             if (Math.abs(swipeDistance) > threshold) {
                 // Swipe from the left side (right swipe)
@@ -189,11 +190,11 @@
 
         window.onload = () => {
             const buildUrl = "Build";
-            const loaderUrl = buildUrl + "/build.loader.js";
+            const loaderUrl = buildUrl + "/WebGL - Dev.loader.js";
             const config = {
-                dataUrl: buildUrl + "/build.data.unityweb",
-                frameworkUrl: buildUrl + "/build.framework.js.unityweb",
-                codeUrl: buildUrl + "/build.wasm.unityweb",
+                dataUrl: buildUrl + "/WebGL - Dev.data.unityweb",
+                frameworkUrl: buildUrl + "/WebGL - Dev.framework.js.unityweb",
+                codeUrl: buildUrl + "/WebGL - Dev.wasm.unityweb",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "Kooco",
                 productName: "Asia Poker",
