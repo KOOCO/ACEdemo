@@ -84,6 +84,7 @@
 
         // Detect when user presses back/swipes back
         window.onpopstate = function (event) {
+            event.preventDefault();
             console.log('onpopstate')
             if (!isBackWarningDisplayed) {
                 // Prevent the default back action by pushing state again
