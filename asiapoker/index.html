@@ -83,7 +83,6 @@
         }
 
         // Detect when user presses back/swipes back
-        pushHistory();
         window.addEventListener("onpopstate", function (event) {
             console.log('onpopstate')
             if (!isBackWarningDisplayed) {
@@ -105,13 +104,6 @@
                 window.history.back();
             }
         });
-        function pushHistory() {
-            var state = {
-                title="title",
-                url: "#"
-            };
-            windows.history.pushState(state, "title", "#");
-        }
 
         // Push a dummy state into history on page load to prevent immediate exit
         window.history.pushState(null, null, window.location.href);
