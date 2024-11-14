@@ -108,8 +108,26 @@
         window.onload = function () {
             var url = " ";
             pushHistory();
-            window.addEventListener("popstate", function (e) {
-                console.log('handleBackSwipe')
+            window.addEventListener("popstate", function (event) {
+                console.log('handleBackSwipe');
+                if (!isBackWarningDisplayed) {
+                    // Prevent the back action, show a warning
+                    showWarningNotification();
+
+                    // Set the flag to allow exit on the next swipe
+                    isBackWarningDisplayed = true;
+
+                    // Reset the flag after a few seconds to prevent accidental exit
+                    setTimeout(() => {
+                        isBackWarningDisplayed = false;
+                    }, 3000);  // Adjust the duration as needed
+                } else {
+                    // Allow the swipe back action (or trigger the browser's back behavior)
+                    window.history.back();
+                }
+            });
+            window.addEventListener("hashchange", function (event) {
+                console.log('hashchange');
                 if (!isBackWarningDisplayed) {
                     // Prevent the back action, show a warning
                     showWarningNotification();
