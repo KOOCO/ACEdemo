@@ -83,28 +83,6 @@
         }
 
         // Detect when user presses back/swipes back
-        window.addEventListener("popstate", function (event) {
-            console.log('popstate1')
-            if (!isBackWarningDisplayed) {
-                // Prevent the default back action by pushing state again
-                history.pushState(null, null, window.location.href);
-
-                // Show the warning (can be a custom modal or in-app notification)
-                showWarningNotification();
-
-                // Set the flag to allow exit on the next back swipe
-                isBackWarningDisplayed = true;
-
-                // Optionally, reset the flag after a few seconds to prevent accidental exit
-                setTimeout(() => {
-                    isBackWarningDisplayed = false;
-                }, 3000); // Customize the time as needed
-            } else {
-                // Allow the back action on the second swipe
-                window.history.back();
-            }
-        });
-
         window.addEventListener("load", (event) => {
             console.log('onload');
             isBackWarningDisplayed = false;
