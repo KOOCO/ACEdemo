@@ -200,6 +200,59 @@
         </div>
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
+    
+    <div class="customDialog" style="display: none">
+        <p>Are you sure you want to leave?!</p>
+        <button id="stayButton">Stay</button>
+        <button id="leaveButton">Leave</button>
+    </div>
+
+    <script>
+    // Flag to prevent the dialog from showing multiple times
+    var dialogShown = false;
+
+    // Function to handle page unload (beforeunload event)
+    window.onbeforeunload = function(e) {
+        if (!dialogShown) {
+            e.preventDefault();  // Prevent the page from unloading
+
+            // Show the custom dialog
+            document.getElementById("customDialog").style.display = "block";
+
+            // The dialog message, similar to onbeforeunload dialog text
+            var dialogText = "You have unsaved changes. Are you sure you want to leave?";
+            e.returnValue = dialogText; // For some browsers
+            return dialogText; // For some browsers
+        }
+    };
+
+    // Stay button click handler
+    document.getElementById("stayButton").addEventListener("click", function() {
+        console.log("User clicked Stay");
+
+        // Hide the custom dialog
+        document.getElementById("customDialog").style.display = "none";
+
+        // Allow the page to stay and not unload
+        dialogShown = true;  // Ensure the page can proceed normally now
+    });
+
+    // Leave button click handler
+    document.getElementById("leaveButton").addEventListener("click", function() {
+        console.log("User clicked Leave");
+
+        // Hide the custom dialog
+        document.getElementById("customDialog").style.display = "none";
+
+        // Allow the page to unload or redirect
+        dialogShown = true;
+        setTimeout(() => {
+            console.log('Closed')
+            window.location.href = "https://www.youtube.com";  // Redirect or allow unload
+        }, 5000);
+    });
+</script>
+
     <script>
         //重定向Url
         window.callbackUrl = 'https://jf588.com/';
@@ -215,11 +268,11 @@
 
         window.onload = () => {
             const buildUrl = "Build";
-            const loaderUrl = buildUrl + "/publish.loader.js";
+            const loaderUrl = buildUrl + "/AceDemo.loader.js";
             const config = {
-                dataUrl: buildUrl + "/publish.data.unityweb",
-                frameworkUrl: buildUrl + "/publish.framework.js.unityweb",
-                codeUrl: buildUrl + "/publish.wasm.unityweb",
+                dataUrl: buildUrl + "/AceDemo.data.unityweb",
+                frameworkUrl: buildUrl + "/AceDemo.framework.js.unityweb",
+                codeUrl: buildUrl + "/AceDemo.wasm.unityweb",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "Kooco",
                 productName: "Asia Poker",
