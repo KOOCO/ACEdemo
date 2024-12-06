@@ -201,57 +201,60 @@
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
     
-    <div class="customDialog" style="display: none">
-        <p>Are you sure you want to leave?!</p>
-        <button id="stayButton">Stay</button>
-        <button id="leaveButton">Leave</button>
-    </div>
+<div id="customDialog" class="customDialog" style="display: none;">
+    <p>Are you sure you want to leave?!</p>
+    <button id="stayButton">Stay</button>
+    <button id="leaveButton">Leave</button>
+</div>
 
-    <script>
-    // Flag to prevent the dialog from showing multiple times
-    var dialogShown = false;
+<script>
+// Flag to prevent the dialog from showing multiple times
+var dialogShown = false;
 
-    // Function to handle page unload (beforeunload event)
-    window.onbeforeunload = function(e) {
-        if (!dialogShown) {
-            e.preventDefault();  // Prevent the page from unloading
+// Function to handle page unload
+window.addEventListener("beforeunload", function (e) {
+    if (!dialogShown) {
+        // Show the custom dialog
+        document.getElementById("customDialog").style.display = "block";
 
-            // Show the custom dialog
-            document.getElementById("customDialog").style.display = "block";
+        // Prevent default unload behavior
+        e.preventDefault();
 
-            // The dialog message, similar to onbeforeunload dialog text
-            var dialogText = "You have unsaved changes. Are you sure you want to leave?";
-            e.returnValue = dialogText; // For some browsers
-            return dialogText; // For some browsers
-        }
-    };
+        // In modern browsers, you must explicitly set e.returnValue
+        e.returnValue = ""; // Empty string triggers the browser's default dialog
 
-    // Stay button click handler
-    document.getElementById("stayButton").addEventListener("click", function() {
-        console.log("User clicked Stay");
+        // Block the unload event
+        return "";
+    }
+});
 
-        // Hide the custom dialog
-        document.getElementById("customDialog").style.display = "none";
+// Stay button click handler
+document.getElementById("stayButton").addEventListener("click", function () {
+    console.log("User clicked Stay");
 
-        // Allow the page to stay and not unload
-        dialogShown = true;  // Ensure the page can proceed normally now
-    });
+    // Hide the custom dialog
+    document.getElementById("customDialog").style.display = "none";
 
-    // Leave button click handler
-    document.getElementById("leaveButton").addEventListener("click", function() {
-        console.log("User clicked Leave");
+    // Prevent the dialog from showing again
+    dialogShown = false;
+});
 
-        // Hide the custom dialog
-        document.getElementById("customDialog").style.display = "none";
+// Leave button click handler
+document.getElementById("leaveButton").addEventListener("click", function () {
+    console.log("User clicked Leave");
 
-        // Allow the page to unload or redirect
-        dialogShown = true;
-        setTimeout(() => {
-            console.log('Closed')
-            window.location.href = "https://www.youtube.com";  // Redirect or allow unload
-        }, 5000);
-    });
+    // Hide the custom dialog
+    document.getElementById("customDialog").style.display = "none";
+
+    // Allow the page to unload or redirect
+    dialogShown = true;
+    setTimeout(() => {
+        console.log("Redirecting...");
+        window.location.href = "https://www.youtube.com"; // Redirect or allow unload
+    }, 5000); // Delay for better UX
+});
 </script>
+
 
     <script>
         //重定向Url
