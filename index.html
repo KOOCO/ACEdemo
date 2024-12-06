@@ -200,38 +200,6 @@
         </div>
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
-    
-<script>
-// Flag to prevent the confirmation dialog from showing multiple times
-var dialogShown = false;
-
-// Function to handle the page unload
-window.addEventListener("beforeunload", function (e) {
-    if (!dialogShown) {
-        // Display the built-in confirmation dialog
-        const userConfirmed = confirm("You have unsaved changes. Are you sure you want to leave?");
-
-        if (userConfirmed) {
-            // Add a 5-second delay before unloading the page
-            dialogShown = true; // Prevent showing the dialog again
-
-            e.preventDefault(); // Prevent immediate unload
-            setTimeout(() => {
-                console.log("User confirmed leave, proceeding to unload.");
-                window.location.href = "https://www.youtube.com"; // Redirect or close tab
-            }, 5000);
-
-            return ""; // To suppress the default browser dialog
-        } else {
-            console.log("User chose to stay.");
-            dialogShown = false; // Reset for potential future triggers
-            e.preventDefault(); // Prevent unload
-        }
-    }
-});
-</script>
-
-
     <script>
         //重定向Url
         window.callbackUrl = 'https://jf588.com/';
@@ -247,11 +215,11 @@ window.addEventListener("beforeunload", function (e) {
 
         window.onload = () => {
             const buildUrl = "Build";
-            const loaderUrl = buildUrl + "/AceDemo.loader.js";
+            const loaderUrl = buildUrl + "/publish.loader.js";
             const config = {
-                dataUrl: buildUrl + "/AceDemo.data.unityweb",
-                frameworkUrl: buildUrl + "/AceDemo.framework.js.unityweb",
-                codeUrl: buildUrl + "/AceDemo.wasm.unityweb",
+                dataUrl: buildUrl + "/publish.data.unityweb",
+                frameworkUrl: buildUrl + "/publish.framework.js.unityweb",
+                codeUrl: buildUrl + "/publish.wasm.unityweb",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "Kooco",
                 productName: "Asia Poker",
