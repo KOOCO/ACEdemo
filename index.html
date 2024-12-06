@@ -201,57 +201,33 @@
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
     
-<div id="customDialog" class="customDialog" style="display: none;">
-    <p>Are you sure you want to leave?!</p>
-    <button id="stayButton">Stay</button>
-    <button id="leaveButton">Leave</button>
-</div>
-
 <script>
-// Flag to prevent the dialog from showing multiple times
+// Flag to prevent the confirmation dialog from showing multiple times
 var dialogShown = false;
 
-// Function to handle page unload
+// Function to handle the page unload
 window.addEventListener("beforeunload", function (e) {
     if (!dialogShown) {
-        // Show the custom dialog
-        document.getElementById("customDialog").style.display = "block";
+        // Display the built-in confirmation dialog
+        const userConfirmed = confirm("You have unsaved changes. Are you sure you want to leave?");
 
-        // Prevent default unload behavior
-        e.preventDefault();
+        if (userConfirmed) {
+            // Add a 5-second delay before unloading the page
+            dialogShown = true; // Prevent showing the dialog again
 
-        // In modern browsers, you must explicitly set e.returnValue
-        e.returnValue = ""; // Empty string triggers the browser's default dialog
+            e.preventDefault(); // Prevent immediate unload
+            setTimeout(() => {
+                console.log("User confirmed leave, proceeding to unload.");
+                window.location.href = "https://www.youtube.com"; // Redirect or close tab
+            }, 5000);
 
-        // Block the unload event
-        return "";
+            return ""; // To suppress the default browser dialog
+        } else {
+            console.log("User chose to stay.");
+            dialogShown = false; // Reset for potential future triggers
+            e.preventDefault(); // Prevent unload
+        }
     }
-});
-
-// Stay button click handler
-document.getElementById("stayButton").addEventListener("click", function () {
-    console.log("User clicked Stay");
-
-    // Hide the custom dialog
-    document.getElementById("customDialog").style.display = "none";
-
-    // Prevent the dialog from showing again
-    dialogShown = false;
-});
-
-// Leave button click handler
-document.getElementById("leaveButton").addEventListener("click", function () {
-    console.log("User clicked Leave");
-
-    // Hide the custom dialog
-    document.getElementById("customDialog").style.display = "none";
-
-    // Allow the page to unload or redirect
-    dialogShown = true;
-    setTimeout(() => {
-        console.log("Redirecting...");
-        window.location.href = "https://www.youtube.com"; // Redirect or allow unload
-    }, 5000); // Delay for better UX
 });
 </script>
 
