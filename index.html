@@ -24,6 +24,7 @@
         let touchStartX = 0;
         let touchEndX = 0;
         let threshold = 100;
+	let unityInstance;
 
         // Detect swipe gesture on mobile
         window.addEventListener('touchstart', function (event) {
@@ -121,6 +122,24 @@
                 } else {
                     // Allow the swipe back action (or trigger the browser's back behavior)
                     window.history.back();
+                }
+            });
+	    window.addEventListener("beforeunload", (event) => {
+                console.log('has change url');
+                if (!isBackWarningDisplayed) {
+                    // Prevent the back action, show a warning
+                    showWarningNotification("確定要直接離開遊戲嗎？\nAre you sure you want to leave the game directly?");
+
+                    // Set the flag to allow exit on the next swipe
+                    isBackWarningDisplayed = true;
+
+                    // Reset the flag after a few seconds to prevent accidental exit
+                    setTimeout(() => {
+                        isBackWarningDisplayed = false;
+                    }, 3000);  // Adjust the duration as needed
+                } else {
+                    // Allow the swipe back action (or trigger the browser's back behavior)
+                    //window.unityInstance.SendMessage('LobbyView', 'forceToExit';
                 }
             });
             function pushHistory() {
