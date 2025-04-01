@@ -129,18 +129,12 @@
     		event.returnValue = "確定要直接離開遊戲嗎？";
 	    });
 
-	    // 監聽玩家切換頁面
-	    document.addEventListener("visibilitychange", () => {
-    		if (document.hidden) {
-        	console.log("玩家切到其他頁面");
-        	window.unityInstance.SendMessage("LobbyView", "forceToExit");
-    	       }
-	    });
-
 	    // 監聽頁面被卸載
 	    window.addEventListener("pagehide", (event) => {
-    		console.log("頁面關閉或網址變更");
-    		window.unityInstance.SendMessage("LobbyView", "forceToExit");
+		if(isNavigatingAway){
+    		   console.log("頁面關閉或網址變更");
+    		   window.unityInstance.SendMessage("LobbyView", "forceToExit");
+		}
 	    });
             function pushHistory() {
                 var state = { title: "", url: url };
