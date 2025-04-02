@@ -131,10 +131,8 @@
 
 	    // 監聽頁面被卸載
 	    window.addEventListener("pagehide", (event) => {
-		//if(isNavigatingAway){
     		   console.log("頁面關閉或網址變更");
     		   window.unityInstance.SendMessage("LobbyView", "forceToExit");
-		//}
 	    });
             function pushHistory() {
                 var state = { title: "", url: url };
