@@ -375,6 +375,8 @@
                         const lineMail = queryParams['linemail'];
 
                         const session = queryParams['session'];
+                 	//語言碼
+                        const code = queryParams['codes'];
 
                         const loginWithUserName = queryParams['login'];
                         //IG Id與名子
@@ -397,6 +399,10 @@
                         if (session) {
                             //Session id
                             instance.SendMessage('LoadSceneManager', 'NoodleSession', session);
+                        }
+                        if (code) {
+                            //Session id
+                            instance.SendMessage('Entry', 'selectLan', code);
                         }
                         if (loginWithUserName) {
                             //Login id
