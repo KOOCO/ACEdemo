@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="TemplateData/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3modal@1.9.5/dist/index.min.js"></script>
-    <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
 
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>-->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js"></script>
 
     <script src="Firebase/FirebaseFun.js"></script>
@@ -289,7 +289,7 @@
                         instance.SendMessage('Entry', 'IsDefaultBrowser', isDefaultBrowser.toString());
 
                         //檢測Coinbase App是否開啟
-                        function isCoinbaseAppOpen() {
+                        /*function isCoinbaseAppOpen() {
                             // 定义Coinbase自定义协议的URL
                             var coinbaseProtocolURL = "coinbase://"; // 这是一个示例URL，请确保是正确的Coinbase自定义协议URL
 
@@ -330,7 +330,7 @@
                             }
                         }
                         // 调用函数检测Coinbase应用是否打开
-                        isCoinbaseAppOpen();
+                        isCoinbaseAppOpen();*/
 
                         // 網頁視窗焦點
                         window.addEventListener("blur", function () {
@@ -375,6 +375,8 @@
                         const lineMail = queryParams['linemail'];
 
                         const session = queryParams['session'];
+                 	//語言碼
+                        const codes = queryParams['codes'];
 
                         const loginWithUserName = queryParams['login'];
                         //IG Id與名子
@@ -397,6 +399,10 @@
                         if (session) {
                             //Session id
                             instance.SendMessage('LoadSceneManager', 'NoodleSession', session);
+                        }
+                        if (codes) {
+                            //Session id
+                            instance.SendMessage('Entry', 'selectLan', codes);
                         }
                         if (loginWithUserName) {
                             //Login id
